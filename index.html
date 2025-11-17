@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>¡Feliz Cumpleaños, Papá!</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ===== PANTALLA DE BIENVENIDA ===== -->
+  <div id="welcomeScreen" class="welcome-screen">
+    <img src="imagenes/1.jpg" alt="Foto Papá" class="welcome-img">
+
+    <div class="welcome-text">
+      <h1 class="title-typewriter">¡Feliz Cumpleaños, Papá! 🎉</h1>
+
+      <!-- Texto largo con animación -->
+      <p id="typewriterText" class="typewriter">
+        Hola
+       <!-- ===== Papá, gracias por todo tu esfuerzo.  
+        Si hoy estoy aquí con mi título en mano, es porque tú nunca dejaste de apoyarme.  
+        Gracias por levantarme temprano, por llevarme a la escuela incluso cuando estabas cansado, por creer en mí cuando yo dudaba y por enseñarme que los sueños se construyen con dedicación.  
+        Tu esfuerzo, tu tiempo y tu amor están en cada paso que doy.  
+        Este logro no es solo mío… también es tuyo.  
+        Gracias por ser mi ejemplo, mi motor y mi fuerza.  
+        Te quiero mucho, papá. 💛===== -->
+      </p>
+
+      <button id="enterBtn" class="btn enter-btn">Entrar 🎈</button>
+    </div>
+  </div>
+
+  <!-- ===== CONTENIDO PRINCIPAL ===== -->
+  <div id="mainContent" class="hidden">
+
+    <header class="header">
+      <div class="header-inner">
+        <h1 class="title">¡Feliz Cumpleaños, Papá! 🎉</h1>
+        <p class="subtitle">Hoy celebramos tus mejores historias y tus mejores chistes</p>
+      </div>
+    </header>
+
+    <main class="main">
+
+      <!-- Frases -->
+      <section class="frases" aria-labelledby="frases-title">
+        <h2 id="frases-title">Mensajes y Frases</h2>
+        <div class="frases-list">
+          <p class="frase">"Gracias por enseñarme a ser mejor persona"</p>
+          <p class="frase">"Eres la razón por la que mi sonrisa tiene Wi-Fi: conexión inmediata."</p>
+          <p class="frase">"Papá: maestro y consejero."</p>
+        </div>
+      </section>
+
+      <!-- Collage -->
+      <section class="collage" aria-labelledby="collage-title">
+        <h2 id="collage-title">Collage de Momentos</h2>
+
+        <div class="collage-actions">
+          <button id="startSlideshow" class="btn">Ver slideshow ▶</button>
+        </div>
+
+        <div id="collageGrid" class="collage-grid">
+          <img src="imagenes/2.jpg" alt="Fojpgto 1" class="collage-item" />
+          <img src="imagenes/3.jpg" alt="Foto 2" class="collage-item" />
+          <img src="imagenes/4.jpg" alt="Foto 3" class="collage-item" />
+        </div>
+      </section>
+
+      <!-- Música -->
+      <section class="musica" aria-labelledby="musica-title">
+        <h2 id="musica-title">Música</h2>
+        <p class="nota">Puedes reemplazar <code>music.mp3</code> por la canción que prefieras.</p>
+
+        <div class="player-controls">
+          <button id="playPause" class="btn">Reproducir / Pausar ♪</button>
+          <button id="volUp" class="btn small">Vol +</button>
+          <button id="volDown" class="btn small">Vol −</button>
+        </div>
+
+        <audio id="bgAudio" loop preload="auto">
+          <source src="audio/FF.mp3" type="audio/mpeg">
+        </audio>
+      </section>
+
+    </main>
+
+    <footer class="footer">
+      <p>Con todo el cariño 💙</p>
+    </footer>
+  </div>
+
+  <!-- Modal Slideshow -->
+  <div id="slideshowModal" class="modal" aria-hidden="true">
+    <div class="modal-card slideshow-card">
+      <button class="modal-close">✕</button>
+      <div id="slideContainer" class="slide-container"></div>
+
+      <div class="slide-controls">
+        <button id="prevSlide" class="btn small">◀</button>
+        <button id="nextSlide" class="btn small">▶</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    // ---- ANIMACIÓN MAQUINA DE ESCRIBIR ----
+    const textElement = document.getElementById("typewriterText");
+    const fullText = textElement.textContent.trim();
+    let index = 0;
+    textElement.textContent = "";
+
+    function typeWriter() {
+      if (index < fullText.length) {
+        textElement.textContent += fullText.charAt(index);
+        index++;
+        setTimeout(typeWriter, 22); 
+      }
+    }
+    typeWriter();
+
+    // BIENVENIDA
+    const welcomeScreen = document.getElementById("welcomeScreen");
+    const mainContent = document.getElementById("mainContent");
+    const enterBtn = document.getElementById("enterBtn");
+
+    enterBtn.addEventListener("click", () => {
+      welcomeScreen.classList.add("fade-out");
+      setTimeout(() => {
+        welcomeScreen.style.display = "none";
+        mainContent.classList.remove("hidden");
+      }, 900);
+    });
+
+    // ---- Slideshow ----
+    const collageGrid = document.getElementById('collageGrid');
+    const startSlideshow = document.getElementById('startSlideshow');
+    const slideshowModal = document.getElementById('slideshowModal');
+    const slideContainer = document.getElementById('slideContainer');
+
+    function openSlideshow() {
+      const imgs = collageGrid.querySelectorAll('img');
+      slideContainer.innerHTML = '';
+
+      imgs.forEach((img, i) => {
+        const slide = document.createElement('div');
+        slide.className = 'slide';
+        if (i === 0) slide.classList.add('active');
+
+        const image = document.createElement('img');
+        image.src = img.src;
+        slide.appendChild(image);
+
+        slideContainer.appendChild(slide);
+      });
+
+      slideshowModal.classList.add('open');
+      slideshowModal.setAttribute('aria-hidden', 'false');
+    }
+
+    startSlideshow.addEventListener('click', openSlideshow);
+
+    document.getElementById('nextSlide').addEventListener('click', () => changeSlide(1));
+    document.getElementById('prevSlide').addEventListener('click', () => changeSlide(-1));
+
+    function changeSlide(dir) {
+      const slides = slideContainer.querySelectorAll('.slide');
+      let idx = Array.from(slides).findIndex(s => s.classList.contains('active'));
+
+      slides[idx].classList.remove('active');
+      idx = (idx + dir + slides.length) % slides.length;
+      slides[idx].classList.add('active');
+    }
+
+    document.querySelectorAll('.modal-close').forEach(btn => {
+      btn.addEventListener('click', () => {
+        slideshowModal.classList.remove('open');
+        slideshowModal.setAttribute('aria-hidden', 'true');
+      });
+    });
+
+    // ---- Audio ----
+    const playPause = document.getElementById('playPause');
+    const bgAudio = document.getElementById('bgAudio');
+    const volUp = document.getElementById('volUp');
+    const volDown = document.getElementById('volDown');
+
+    playPause.addEventListener('click', () => {
+      if (bgAudio.paused) {
+        bgAudio.play();
+        playPause.textContent = 'Pausar ⏸';
+      } else {
+        bgAudio.pause();
+        playPause.textContent = 'Reproducir ♪';
+      }
+    });
+
+    volUp.addEventListener('click', () => bgAudio.volume = Math.min(1, bgAudio.volume + 0.1));
+    volDown.addEventListener('click', () => bgAudio.volume = Math.max(0, bgAudio.volume - 0.1));
+  </script>
+
+</body>
+</html>
